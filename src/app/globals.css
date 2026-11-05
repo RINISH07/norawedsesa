@@ -1,0 +1,249 @@
+@import url("https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --burgundy: #741b35;
+  --deep-maroon: #551126;
+  --soft-rose: #a85c72;
+  --ivory: #fffdfb;
+  --champagne: #b69a68;
+  --muted-grey: #897a7d;
+  --paper: #fffdfb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--paper);
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--deep-maroon);
+  font-family: "Lora", Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  color: var(--ivory);
+  background: var(--burgundy);
+}
+
+.invitation-section {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100svh;
+  align-items: center;
+  justify-content: center;
+  overflow: clip;
+  padding: max(4rem, calc(3rem + env(safe-area-inset-top)))
+    max(1rem, env(safe-area-inset-right))
+    max(5rem, calc(3rem + env(safe-area-inset-bottom)))
+    max(1rem, env(safe-area-inset-left));
+}
+
+.scene-opening {
+  padding-top: max(5rem, calc(3rem + env(safe-area-inset-top)));
+  padding-bottom: max(7rem, calc(5rem + env(safe-area-inset-bottom)));
+}
+
+.scene-family {
+  min-height: auto;
+  padding-block: clamp(4rem, 9svh, 7rem);
+}
+
+.scene-event,
+.scene-reception {
+  min-height: 100svh;
+  padding-block: clamp(4rem, 8svh, 6.5rem);
+}
+
+.scene-countdown {
+  min-height: min(82svh, 58rem);
+  padding-block: clamp(4rem, 8svh, 6.5rem);
+}
+
+.section-content {
+  position: relative;
+  z-index: 2;
+  /* keep content clear of the corner flowers */
+  margin-top: calc(var(--flower-w) * 0.45);
+  margin-bottom: calc(var(--flower-w) * 0.4);
+  width: min(100%, 46rem);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section-content-wide {
+  width: min(100%, 64rem);
+}
+
+.eyebrow {
+  color: var(--soft-rose);
+  font-family: "Lora", Georgia, serif;
+  font-size: clamp(0.64rem, 1.4vw, 0.72rem);
+  font-weight: 500;
+  letter-spacing: 0.23em;
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+
+.display-serif {
+  font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+.opening-copy,
+.verse-panel,
+.family-card,
+.event-panel,
+.countdown-panel {
+  border: 1px solid rgba(182, 154, 104, 0.25);
+  background: rgba(255, 253, 251, 0.86);
+  box-shadow: 0 12px 42px rgba(85, 17, 38, 0.055);
+  backdrop-filter: blur(8px);
+}
+
+.opening-copy {
+  text-shadow: 0 0 8px #fffdfb, 0 0 16px #fffdfb, 0 0 24px #fffdfb;
+  padding: clamp(1rem, 3vw, 2rem);
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.verse-panel {
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  border-radius: 1.5rem;
+}
+
+.family-card {
+  height: 100%;
+  padding: clamp(1.35rem, 3vw, 2rem) clamp(1rem, 2.5vw, 1.75rem);
+  border-radius: 1.35rem;
+}
+
+.event-panel {
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 1.5rem;
+}
+
+.countdown-panel {
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  border-radius: 2rem;
+  background: linear-gradient(145deg, rgba(250, 239, 241, 0.88), rgba(255, 251, 248, 0.88));
+}
+
+/* Floral artwork per section: top-left + bottom-right in every section, so
+   flowers from neighbouring sections never pile up on the same side. */
+.invitation-section {
+  --flower-w: min(54vw, 22rem);
+}
+
+.invitation-section::before,
+.invitation-section::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  width: var(--flower-w);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  transform: scaleX(-1);
+}
+
+.invitation-section::before {
+  top: 0;
+  left: 0;
+  aspect-ratio: 768 / 585;
+  background-image: url("/images/floral-top.webp");
+}
+
+.invitation-section::after {
+  right: 0;
+  bottom: 0;
+  aspect-ratio: 768 / 597;
+  background-image: url("/images/floral-bottom.webp");
+}
+
+/* Flowers glide in from their corners as each section scrolls into view */
+@keyframes flower-glide {
+  from {
+    opacity: 0;
+    translate: var(--fx) var(--fy);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .invitation-section::before,
+  .invitation-section::after {
+    animation: flower-glide linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+
+  .invitation-section::before {
+    --fy: -30%;
+    --fx: -25%;
+  }
+
+  .invitation-section::after {
+    --fy: 30%;
+    --fx: 25%;
+  }
+}
+
+@media (max-width: 640px) {
+  /* keep text clear of the flowers on narrow screens */
+  .invitation-section {
+    padding-inline: max(1.75rem, env(safe-area-inset-left));
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .invitation-section,
+  .scene-opening,
+  .scene-event,
+  .scene-reception,
+  .scene-countdown {
+    min-height: auto;
+    padding-block: 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .petal {
+    display: none !important;
+  }
+
+  .scroll-progress {
+    display: none;
+  }
+}
