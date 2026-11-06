@@ -14,7 +14,6 @@ export const wedding = {
       grandparents: [
         "Abdurahiman Haji & Khadeeja",
         "Ambarakkal Hamza Haji & Haleema (Late)",
-        "Asiya",
       ],
     },
     groom: {
